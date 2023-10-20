@@ -10,15 +10,26 @@ function MessageInput( {socket}: {socket: Socket}) {
     }
     
     const changeTime = (value: number) => {
-        socket?.emit("changeTimer", value)
+        socket?.emit("updateTimer", value)
+    }
+
+    const changeClient1 = (value: number) => {
+        socket?.emit("updateClient1", value)
     }
 
     return (
         <>
-            <input onChange={(e) => setValue(e.target.value)} placeholder="Type your message" value={value} />
-            <button onClick={() => send(value)}>SEND</button>
-            <button onClick={() => changeTime(5000)}>5secondes</button>
-            <button onClick={() => changeTime(1000)}>1seconde</button>
+            <div>
+                <input onChange={(e) => setValue(e.target.value)} placeholder="Type your message" value={value} />
+                <button onClick={() => send(value)}>SEND</button>
+            </div>
+            <div>
+                <button onClick={() => changeTime(5000)}>5secondes</button>
+                <button onClick={() => changeTime(1000)}>1seconde</button>
+            </div>
+            <div>
+                <button onClick={() => changeClient1(5)}>bonjour</button>
+            </div>        
         </>
     )
 }

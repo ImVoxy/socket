@@ -7,15 +7,9 @@ import Messages from "./components/Messages"
 import { socket } from "./socket"
 
 function App() {
-  // const [socket, setSocket] = useState<Socket>(io("http://localhost:8001"))
   const [messages, setMessages] = useState<string[]>([])
+  const [client1, setClient1] = useState('');
   
-  // useEffect(() => {
-  //   const newSocket = io("http://localhost:8001")
-  //   setSocket(newSocket)
-  // }, [setSocket])
-
-  const sleep = (ms: any) => new Promise(r => setTimeout(r, ms));
 
   const messageListener = (message: string) =>{
     setMessages([...messages, message])
@@ -39,10 +33,26 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    // Pour obtenir la valeur partagée
+    socket.emit('getClient1');
+    socket.on('client1', (value) => {
+      setClient1(value);
+    });
+
+    // Pour mettre à jour la valeur partagée
+    socket.emit('updateClient1', 12);
+  }, []);
+
   return (
     <>
-    <MessageInput socket={socket}/>
-    <Messages messages={messages}/>
+    <div>
+      <MessageInput socket={socket}/>
+      <Messages messages={messages}/>
+    </div>  
+      <div>
+      <p>Client 1 : {client1}</p>
+      </div>
     </>
   );
 }
